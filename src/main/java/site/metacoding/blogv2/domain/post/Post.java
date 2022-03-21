@@ -27,7 +27,7 @@ import site.metacoding.blogv2.domain.user.User;
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Post {
+public class Post { // N드라이빙 테이블, FK의 주인
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
