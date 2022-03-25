@@ -22,21 +22,27 @@ public class UserApiController {
     private final UserService userService;
     private final HttpSession session;
 
+    @GetMapping("/logout")
+    public ResponseDto<?> logout() {
+        session.invalidate();
+        return new ResponseDto<>(1, "성공", null);
+    }
+
     @PostMapping("/join")
-    public ResponseDto<String> join(@RequestBody JoinDto joinDto) {
+    public ResponseDto<?> join(@RequestBody JoinDto joinDto) {
 
         userService.회원가입(joinDto);
-        return new ResponseDto<String>(1, "회원가입성공", null);
+        return new ResponseDto<>(1, "회원가입성공", null);
     }
 
     @PostMapping("/login")
     // 톰캣이 만들어줌 httpservletResponse
-    public ResponseDto<String> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+    public ResponseDto<?> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
         User userEntity = userService.로그인(loginDto);
 
         // 오류가 터지지는 않고 알려줌의 용도
         if (userEntity == null) {
-            return new ResponseDto<String>(-1, "로그인실패", null);
+            return new ResponseDto<>(-1, "로그인실패", null);
         }
 
         if (loginDto.getRemember().equals("on")) {
