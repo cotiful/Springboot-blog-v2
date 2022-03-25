@@ -1,60 +1,79 @@
- // 1. 이벤트 리스너
- $("#btn-join").click(() => {
-    join();
-  });
-
-  $("#btn-login").click(()=>{
-    login();
+// 1. 이벤트 리스너
+$("#btn-join").click(() => {
+  join();
 });
 
-  // 2. 기능
+$("#btn-login").click(() => {
+  login();
+});
 
-  // 회원가입 요청 메서드
-  let join = async () => {
-    // (1) username, password, email ,addr을 찾아서 오브젝트로 만든다
-    let joinDto = {
+
+// 2. 기능
+
+// 유저네임 기억하기 메서드 httpOnly 속성이 걸려있으면 안된다 주의하자!!
+function usernameRemember() {
+  let cookies = document.cookie.split("=");
+  //console.log(cookies[1]);
+  $("#username").val(cookies[1]);
+}
+usernameRemember();
+
+// 회원가입 요청 메서드
+async function join() {
+  // (1) username, password, email, addr 을 찾아서 오브젝트로 만든다.
+  let joinDto = {
       username: $("#username").val(),
       password: $("#password").val(),
       email: $("#email").val(),
-      addr: $("#addr").val(),
-    }
-    // (2) fetch 요청한다. (json으로 변환해서)
-    let response = await fetch("/api/join", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8"
-      },
-      body: JSON.stringify(joinDto)
-    });
-    let responseJson = await response.json();
-    // (3) 회원가입이 잘되면 알림창 띄우고 로그인페이지로 이동한다
-    if (responseJson.code == 1) {
-      alert("회원가입에 성공하였습니다.");
-      location.href = "/loginForm";
-    } else {
-      alert("회원가입에 실패하였습니다.")
-    }
+      addr: $("#addr").val()
   }
 
-  // 로그인 요청 메서드
-let login = async ()=>{
-    let loginDto = {
-    username:$("#username").val(),
-    password:$("#password").val()
-    }
-let response = await  fetch("/api/login",{
-        method:"POST",
-        headers:{
-        "Content-Type": "application/json;charset=utf-8"
+  // (2) fetch 요청한다. (json으로 변환해서)
+  let response = await fetch("/join", {
+      method: "POST",
+      body: JSON.stringify(joinDto),
+      headers: {
+          'Content-Type': 'application/json; charset=utf-8'
       },
-      body:JSON.stringify(loginDto)
-    })
-    let responseJson = await response.json();
+  });
+  let responseParse = await response.json();
+  console.log(responseParse);
 
-    if(responseJson.code ==1){
-        alert("로그인에 성공하였습니다.");
-        location.href ="/";
-    }else{
-        alert("로그인에 실패하였습니다.")
-    }
+  // (3) 회원가입이 잘되면 알림창 띄우고 로그인 페이지로 이동한다.
+  if (responseParse.code == 1) {
+      alert("회원가입완료");
+      location.href = "/loginForm";
+  } else {
+      alert('회원가입실패');
+  }
+}
+
+// 로그인 요청 메서드
+async function login() {
+
+  // checkbox의 체크여부를 제이쿼리에서 확인하는 법
+  let checked = $('#remember').is(':checked');
+
+  let loginDto = {
+      username: $("#username").val(),
+      password: $("#password").val(),
+      remember: checked ? "on" : "off"
+  }
+
+  let response = await fetch("/login", {
+      method: "POST",
+      body: JSON.stringify(loginDto),
+      headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+      }
+  });
+  let responseParse = await response.json();
+  console.log(responseParse);
+
+  if (responseParse.code == 1) {
+      alert("로그인완료");
+      location.href = "/";
+  } else {
+      alert('로그인실패');
+  }
 }

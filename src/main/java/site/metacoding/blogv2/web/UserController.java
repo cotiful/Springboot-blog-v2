@@ -22,6 +22,10 @@ public class UserController {
 
     @GetMapping("/loginForm")
     public String loginForm() {
+
+        // // 쿠키로직
+        // String cookieValue = request.getHeader("Cookie");
+
         return "user/loginForm";
     }
 
