@@ -1,5 +1,7 @@
 package site.metacoding.blogv2.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,5 +28,18 @@ public class UserService {
     public User 로그인(LoginDto loginDto) {
         User userEntity = userRepository.mLogin(loginDto.getUsername(), loginDto.getPassword());
         return userEntity;
+    }
+
+    public User 회원정보(Integer id) {
+        // id 가 현재 3번까지 밖에 없지만 5번이 실수로 들어와도 터지지 않도록 optional이 도와줌
+
+        Optional<User> userOp = userRepository.findById(id);
+        if (userOp.isPresent()) {
+            return userOp.get();
+        } else {
+            throw new RuntimeException("아이디를 찾을 수 없습니다");
+        }
+        // User userEntity = userRepository.findById(id).get();
+        // return userEntity;
     }
 }
