@@ -1,14 +1,19 @@
-package site.metacoding.blogv2.domain.user;
+package site.metacoding.blogv2.domain.comment;
 
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,35 +21,30 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import site.metacoding.blogv2.domain.post.Post;
+import site.metacoding.blogv2.domain.user.User;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EntityListeners(AuditingEntityListener.class)
 @Entity
-public class User {
-
+@EntityListeners(AuditingEntityListener.class)
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, nullable = false, length = 12)
-    private String username;
+    private String content;
 
-    @Column(nullable = false, length = 12)
-    private String password;
+    @JoinColumn(name = "userId")
+    @ManyToOne
+    private User user;
 
-    @Column(nullable = false, length = 30)
-    private String email;
-
-    @Column(nullable = false, length = 300)
-    private String addr; // API 주소 라이브러리 사용할 예정
-
-    @Column(nullable = false, length = 300)
-    private String profilelmg; // 이미지 파일을 전송 받아서 서버에 두고, 경로를 디비에 저장
+    @JoinColumn(name = "postId")
+    @ManyToOne
+    private Post post;
 
     @CreatedDate
     private LocalDateTime createDate;
-    @LastModifiedDate
-    private LocalDateTime updateDate;
+
 }
