@@ -15,6 +15,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -27,16 +29,16 @@ import site.metacoding.blogv2.domain.comment.Comment;
 import site.metacoding.blogv2.domain.user.User;
 
 /**
- * GET post/1 상세보기
+ * GET /post/1 상세보기
  * User, Post, List<Comment>
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Post { // N드라이빙 테이블, FK의 주인
+@Entity
+public class Post { // N (드라이빙 테이블, FK의 주인)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -56,12 +58,12 @@ public class Post { // N드라이빙 테이블, FK의 주인
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @OneToMany(mappedBy = "post") // 연관관계의 주인의 변수명, 기본전략 Lazy로 돼있음
+    @JsonIgnoreProperties({ "post" }) // messageConverter에게 알려주는 어노테이션
+    @OneToMany(mappedBy = "post") // 연관관계의 주인의 변수명
     private List<Comment> comments;
 
-    @CreatedDate
+    @CreatedDate // insert
     private LocalDateTime createDate;
-    @LastModifiedDate
+    @LastModifiedDate // insert, update
     private LocalDateTime updateDate;
-
 }

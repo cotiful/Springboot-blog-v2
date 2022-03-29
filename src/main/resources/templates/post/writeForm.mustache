@@ -6,12 +6,12 @@
     <!--  글쓰기 폼 시작 -->
     <form>
         <div class="mb-3 mt-3">
-            <input type="text" class="form-control" placeholder="Enter title">
+            <input id="title" type="text" class="form-control" placeholder="Enter title">
         </div>
         <div class="mb-3">
-            <textarea rows="10" class="form-control" id="content"></textarea>
+            <textarea id="content" rows="10" class="form-control" id="content"></textarea>
         </div>
-        <button type="button" class="btn btn-secondary">글쓰기</button>
+        <button id="btn-write" type="button" class="btn btn-secondary">글쓰기</button>
     </form>
     <!-- 글쓰기 폼 끝 -->
 
@@ -24,4 +24,10 @@
     });
 </script>
 
+<script>
+    $("#btn-write").click(()=>{
+        write();
+    });
+
+</script>
 {{> /layout/footer}}
