@@ -9,7 +9,7 @@ import site.metacoding.blogv2.config.filter.MyFilter2;
 
 // Controller, RestController, Repository, Service, Component , Configuration(설정파일인 줄 앎)
 
-@Configuration
+//@Configuration
 public class FilterConfig {
 
     @Bean // IOC 컨테이너에 필터 설정파일 등록
