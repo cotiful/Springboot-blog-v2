@@ -50,7 +50,7 @@ public class Post { // N (드라이빙 테이블, FK의 주인)
     @Column(nullable = false)
     private String content;
 
-    @ColumnDefault("0")
+    // @ColumnDefault("0") 쓰지마세요.
     @Column(nullable = false)
     private Integer pageCount; // 조회수
 

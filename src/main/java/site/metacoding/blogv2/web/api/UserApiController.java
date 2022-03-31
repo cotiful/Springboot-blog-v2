@@ -42,11 +42,11 @@ public class UserApiController {
 
     // 우리 웹브라우저에서는 현재 사용안함. 추후 앱에서 요청시에 사용할 예정
     // 이것도 있어야 나중에 앱에서 상세보기 할 수 있음
-    // @GetMapping("/s/api/user/{id}")
-    // public ResponseDto<?> userInfo(@PathVariable Integer id){
-    // User userEntity = userService.회원정보(id);
-    // return new ResponseDto<>(1, "성공", userEntity);
-    // }
+    @GetMapping("/s/api/user/{id}")
+    public ResponseDto<?> userInfo(@PathVariable Integer id) {
+        User userEntity = userService.회원정보(id);
+        return new ResponseDto<>(1, "성공", userEntity);
+    }
 
     @GetMapping("/logout")
     public ResponseDto<?> logout() {
