@@ -6,8 +6,6 @@ $("#btn-write").click(() => {
 
 // 2. 기능 함수
 
-   
-
     async function write() {
         let writeDto = {
             title: $("#title").val(),
