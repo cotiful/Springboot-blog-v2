@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,13 +41,13 @@ public class PostApiController {
         }
 
         DetailResponseDto detailResponseDto = new DetailResponseDto(postEntity, auth);
-        // null 대신 postEntity 가 있는 이유는 데이터를 전송해줘야 하니깐
         return new ResponseDto<>(1, "성공", detailResponseDto);
     }
 
     @GetMapping("/api/post")
     public ResponseDto<?> list(Integer page) {
         Page<Post> posts = postService.게시글목록(page);
+        // 응답의 DTO를 만들어서 <- posts 를 옮김. (라이브러리 있음)
         return new ResponseDto<>(1, "성공", posts);
     }
 
@@ -59,5 +61,4 @@ public class PostApiController {
 
         return new ResponseDto<>(1, "성공", null);
     }
-
 }
